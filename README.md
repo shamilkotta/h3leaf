@@ -14,7 +14,7 @@ Or let an existing Vite build produce the Worker too:
 ```ts
 // vite.config.ts
 import { defineConfig } from "vite";
-import { h3leaf } from "@h3leaf/vite";
+import { h3leaf } from "h3leaf/vite";
 
 export default defineConfig({ plugins: [h3leaf()] });
 ```
@@ -27,7 +27,7 @@ export const GET = (event: H3Event) => ({ id: event.context.params.id });
 export const DELETE = () => new Response(null, { status: 204 });
 ```
 
-Supported files: `index`, static segments, `[id]`, `[[id]]`, `[...path]`, and `[[...path]]`; route files can export HTTP method names, `handler` (all methods), or `default` (all methods). Route groups `(name)` do not affect the URL. See `packages/compiler/README.md` for the full convention.
+Supported files: `index`, static segments, `[id]`, `[[id]]`, `[...path]`, and `[[...path]]`; route files can export HTTP method names, `handler` (all methods), or `default` (all methods). Route groups `(name)` do not affect the URL. See `packages/h3leaf/README.md` for the full convention.
 
 `[id]` is required: `api/users/[id].ts` matches `/users/42`, not `/users`. `[[id]]` is optional: `api/users/[[id]].ts` matches both `/users` and `/users/42`.
 

@@ -1,4 +1,8 @@
-# Route conventions
+# h3leaf
+
+Convention-based H3 route compiler, CLI, and optional Vite plugin (`h3leaf/vite`).
+
+## Route conventions
 
 Files under the routes directory are URL endpoints. `index.ts` resolves to its directory; extensions may be `.ts`, `.tsx`, `.js`, `.jsx`, `.mts`, or `.mjs`. Files beginning with `_`, test/spec files, and declaration files are ignored.
 
@@ -30,3 +34,17 @@ export const app = new H3().use((event) => {
 ```
 
 The CLI supports `--entry custom-app` for another module name. The compiler and Vite plugin accept `entryFile: "custom-app"`; set it to `false` to disable entry-file discovery.
+
+## Vite plugin
+
+Build the frontend and its H3 API Worker in one `vite build` command:
+
+```ts
+// vite.config.ts
+import { defineConfig } from "vite";
+import { h3leaf } from "h3leaf/vite";
+
+export default defineConfig({
+  plugins: [h3leaf({ routesDir: "api", base: "/api", outFile: "worker.mjs" })],
+});
+```

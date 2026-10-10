@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { createBuilder } from "vite";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { h3leaf } from "./index.js";
+import { h3leaf } from "./vite.js";
 
 const fixtures: string[] = [];
 

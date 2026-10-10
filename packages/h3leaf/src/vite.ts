@@ -1,5 +1,5 @@
 import { Effect } from "effect";
-import { discoverRoutes, generateEntry, resolveEntryFile } from "@h3leaf/compiler";
+import { discoverRoutes, generateEntry, resolveEntryFile } from "./index.js";
 import { Readable } from "node:stream";
 import path from "node:path";
 import type { Plugin } from "vite";

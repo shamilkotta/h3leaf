@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import { Effect } from "effect";
-import { compile } from "./index.js";
-import { build, context } from "esbuild";
+import { discoverRoutes, generateEntry, resolveEntryFile, type Route } from "./index.js";
+import { build, context, type Plugin } from "esbuild";
 import { watch } from "node:fs";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
+import { tmpdir } from "node:os";
 import { H3, serve } from "h3";
 
 const args = process.argv.slice(2);
@@ -27,27 +28,65 @@ if (!command || args.includes("--help") || !["build", "dev"].includes(command)) 
 const routesDirectory = option("--routes") ?? "api";
 const base = option("--base");
 const entryFile = option("--entry");
+const virtualEntry = "virtual:h3leaf/entry";
 
-const bundle = async (entry: string, outFile: string) =>
-  build({
-    entryPoints: [entry],
-    outfile: outFile,
-    bundle: true,
-    format: "esm",
-    platform: "neutral",
-    target: "es2022",
-    legalComments: "none",
-    sourcemap: true,
-  });
+const prepareEntry = (): Effect.Effect<
+  { readonly routes: readonly Route[]; readonly contents: string },
+  Error
+> => {
+  const resolvedRoutes = path.resolve(routesDirectory);
+  return Effect.all({
+    routes: discoverRoutes(resolvedRoutes),
+    resolvedEntry: resolveEntryFile(resolvedRoutes, entryFile),
+  }).pipe(
+    Effect.map(({ routes, resolvedEntry }) => ({
+      routes,
+      contents: generateEntry(routes, {
+        routesDirectory: resolvedRoutes,
+        entryFile: resolvedEntry,
+        base,
+        importFile: (file) => file.replace(/\\/g, "/"),
+      }),
+    }))
+  );
+};
+
+const virtualEntryPlugin = (getContents: () => string): Plugin => ({
+  name: "h3leaf-virtual-entry",
+  setup(buildApi) {
+    buildApi.onResolve({ filter: /^virtual:h3leaf\/entry$/ }, () => ({
+      path: virtualEntry,
+      namespace: "h3leaf",
+    }));
+    buildApi.onLoad({ filter: /.*/, namespace: "h3leaf" }, () => ({
+      contents: getContents(),
+      loader: "ts",
+      resolveDir: path.resolve(routesDirectory),
+    }));
+  },
+});
+
+const sharedBundleOptions = {
+  entryPoints: [virtualEntry],
+  bundle: true,
+  format: "esm" as const,
+  platform: "neutral" as const,
+  target: "es2022",
+  legalComments: "none" as const,
+};
 
 if (command === "build") {
-  const outFile = path.resolve(option("--out") ?? "dist/worker.mjs");
-  const generatedEntry = path.resolve(".h3leaf/entry.ts");
-  const buildWorker = compile({ routesDirectory, base, entryFile, outFile: generatedEntry }).pipe(
-    Effect.flatMap(({ routes }) =>
+  const outFile = path.resolve(option("--out") ?? "dist/api.mjs");
+  const buildWorker = prepareEntry().pipe(
+    Effect.flatMap(({ routes, contents }) =>
       Effect.tryPromise({
         try: async () => {
-          await bundle(generatedEntry, outFile);
+          await build({
+            ...sharedBundleOptions,
+            outfile: outFile,
+            sourcemap: false,
+            plugins: [virtualEntryPlugin(() => contents)],
+          });
           return { routes, outFile };
         },
         catch: (cause) =>
@@ -70,25 +109,21 @@ if (command === "build") {
     });
 } else {
   const port = Number(option("--port") ?? "3000");
-  const generatedEntry = path.resolve(".h3leaf/dev-entry.ts");
-  const bundledWorker = path.resolve(".h3leaf/dev-worker.mjs");
+  const bundledWorker = path.join(tmpdir(), `h3leaf-dev-${process.pid}.mjs`);
+  let entryContents = "";
   const bundler = await context({
-    entryPoints: [generatedEntry],
+    ...sharedBundleOptions,
+    sourcemap: true,
     outfile: bundledWorker,
-    bundle: true,
-    format: "esm",
-    platform: "neutral",
-    target: "es2022",
-    legalComments: "none",
+    plugins: [virtualEntryPlugin(() => entryContents)],
   });
   let activeApp: { fetch(request: Request): Promise<Response> } | undefined;
   let timer: ReturnType<typeof setTimeout> | undefined;
 
   const reload = async () => {
     try {
-      const { routes } = await Effect.runPromise(
-        compile({ routesDirectory, base, entryFile, outFile: generatedEntry })
-      );
+      const { routes, contents } = await Effect.runPromise(prepareEntry());
+      entryContents = contents;
       await bundler.rebuild();
       const worker = await import(`${pathToFileURL(bundledWorker).href}?v=${Date.now()}`);
       activeApp = worker.app;

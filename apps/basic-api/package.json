@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "h3leaf build --routes api --out dist/worker.mjs",
+    "build": "h3leaf build --routes api --out dist/api.mjs",
     "dev": "h3leaf dev --routes api --port 3000"
   },
   "dependencies": {

@@ -36,7 +36,12 @@ export const h3leaf = (options: H3LeafPluginOptions = {}): Plugin => {
               target: "es2022",
               rollupOptions: {
                 input: virtualEntryId,
-                output: { entryFileNames: options.outFile ?? "worker.mjs", format: "es" },
+                output: {
+                  entryFileNames:
+                    options.outFile ??
+                    (options.base ? `${options.base.replace(/^\/+|\/+$/g, "")}.mjs` : "api.mjs"),
+                  format: "es",
+                },
               },
             },
           },

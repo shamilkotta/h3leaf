@@ -105,7 +105,6 @@ if (command === "build") {
     activeApp ? activeApp.fetch(event.req) : new Response("h3leaf is reloading", { status: 503 })
   );
   const listener = serve(devApp, { port });
-  console.log(`h3leaf: listening on http://localhost:${port}`);
 
   const watcher = watch(path.resolve(routesDirectory), { recursive: true }, () => {
     if (timer) clearTimeout(timer);

@@ -1,0 +1,13 @@
+{
+  "name": "@h3leaf/example-basic-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "h3leaf build --routes api --out dist/worker.mjs",
+    "dev": "h3leaf dev --routes api --port 3000"
+  },
+  "dependencies": {
+    "h3": "^2.0.1-rc.9",
+    "h3leaf": "workspace:*"
+  }
+}

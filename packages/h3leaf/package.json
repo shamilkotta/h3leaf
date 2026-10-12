@@ -1,24 +1,64 @@
 {
   "name": "h3leaf",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "File-based API routing for H3: compile route files into a Cloudflare Workers fetch handler with a CLI or Vite plugin",
+  "keywords": [
+    "api",
+    "api-routes",
+    "cloudflare",
+    "cloudflare-workers",
+    "edge",
+    "fetch",
+    "file-based-routing",
+    "h3",
+    "h3-framework",
+    "h3-router",
+    "router",
+    "serverless",
+    "typescript",
+    "vite",
+    "vite-plugin",
+    "web-standards",
+    "worker",
+    "workers"
+  ],
+  "homepage": "https://github.com/shamilkotta/h3leaf/tree/main/packages/h3leaf#readme",
+  "bugs": {
+    "url": "https://github.com/shamilkotta/h3leaf/issues"
+  },
+  "license": "MIT",
+  "author": "shamilkotta",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shamilkotta/h3leaf.git",
+    "directory": "packages/h3leaf"
+  },
   "bin": {
     "h3leaf": "./dist/cli.mjs"
   },
   "files": [
     "dist",
+    "LICENSE",
     "README.md"
   ],
   "type": "module",
+  "sideEffects": false,
   "exports": {
     "./vite": {
-      "types": "./dist/vite.d.mjs",
+      "types": "./dist/vite.d.mts",
+      "import": "./dist/vite.mjs",
       "default": "./dist/vite.mjs"
-    }
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsdown",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "tsc -p tsconfig.json --noEmit && vitest run && tsdown"
   },
   "dependencies": {
     "effect": "^3.17.8",
@@ -37,5 +77,8 @@
     "vite": {
       "optional": true
     }
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

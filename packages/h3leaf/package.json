@@ -1,6 +1,6 @@
 {
   "name": "h3leaf",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "File-based API routing for H3: compile route files into a Cloudflare Workers fetch handler with a CLI or Vite plugin",
   "keywords": [
     "api",
@@ -36,9 +36,10 @@
     "directory": "packages/h3leaf"
   },
   "bin": {
-    "h3leaf": "./dist/cli.mjs"
+    "h3leaf": "./bin/h3leaf.mjs"
   },
   "files": [
+    "bin",
     "dist",
     "LICENSE",
     "README.md"

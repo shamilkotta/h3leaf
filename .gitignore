@@ -4,5 +4,5 @@ dist/
 .h3leaf/
 coverage/
 .h3leaf-*/
-.vitepress/cache/
-.vitepress/dist/
+**/.vitepress/cache/
+**/.vitepress/dist/

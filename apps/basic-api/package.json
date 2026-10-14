@@ -4,10 +4,14 @@
   "type": "module",
   "scripts": {
     "build": "h3leaf build --routes api --out dist/api.mjs",
-    "dev": "h3leaf dev --routes api --port 3000"
+    "dev": "h3leaf dev --routes api --port 3000",
+    "deploy": "pnpm build && wrangler deploy"
   },
   "dependencies": {
     "h3": "^2.0.1-rc.9",
     "h3leaf": "workspace:*"
+  },
+  "devDependencies": {
+    "wrangler": "^4.150.0"
   }
 }

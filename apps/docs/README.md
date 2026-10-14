@@ -1,3 +1,8 @@
 # Documentation site
 
-Reserved for the h3leaf documentation and landing page. Keeping it in the workspace allows the product, docs, and examples to share route-convention fixtures and release tooling.
+The h3leaf documentation, built with [VitePress](https://vitepress.dev). Guide pages include sections of [`packages/h3leaf/README.md`](../../packages/h3leaf/README.md) by region, so the npm README stays the single source of truth — edit content there.
+
+```sh
+pnpm --filter @h3leaf/docs dev
+pnpm --filter @h3leaf/docs build
+```

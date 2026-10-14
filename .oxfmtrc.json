@@ -4,5 +4,5 @@
   "semi": true,
   "singleQuote": false,
   "trailingComma": "es5",
-  "ignorePatterns": ["**/dist/**", "**/node_modules/**", "**/.h3leaf/**"]
+  "ignorePatterns": ["**/dist/**", "**/node_modules/**", "**/.h3leaf/**", "**/.vitepress/cache/**"]
 }

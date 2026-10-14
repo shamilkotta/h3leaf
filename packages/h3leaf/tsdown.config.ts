@@ -1,7 +1,7 @@
 import { defineConfig } from "tsdown";
 
 export default defineConfig({
-  entry: ["src/cli.ts", "src/vite.ts"],
+  entry: ["src/cli.ts", "src/vite.ts", "src/client.ts"],
   outDir: "dist",
   format: "esm",
   target: "esnext",

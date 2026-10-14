@@ -13,8 +13,10 @@
     "h3",
     "h3-framework",
     "h3-router",
+    "middleware",
     "router",
     "serverless",
+    "typed-client",
     "typescript",
     "vite",
     "vite-plugin",
@@ -49,6 +51,11 @@
       "import": "./dist/vite.mjs",
       "default": "./dist/vite.mjs"
     },
+    "./client": {
+      "types": "./dist/client.d.mts",
+      "import": "./dist/client.mjs",
+      "default": "./dist/client.mjs"
+    },
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -61,7 +68,6 @@
     "prepublishOnly": "tsc -p tsconfig.json --noEmit && vitest run && tsdown"
   },
   "dependencies": {
-    "effect": "^3.17.8",
     "esbuild": "^0.25.10"
   },
   "devDependencies": {

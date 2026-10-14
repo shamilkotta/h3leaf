@@ -1,4 +1,8 @@
 node_modules/
 dist/
+.wrangler/
 .h3leaf/
 coverage/
+.h3leaf-*/
+.vitepress/cache/
+.vitepress/dist/

@@ -4,13 +4,15 @@
   "type": "module",
   "scripts": {
     "build": "vite build --app",
-    "dev": "vite"
+    "dev": "vite",
+    "typecheck": "h3leaf types --base /api && tsc -p tsconfig.json"
   },
   "dependencies": {
     "h3": "^2.0.1-rc.9",
     "h3leaf": "workspace:*"
   },
   "devDependencies": {
+    "typescript": "^5.9.3",
     "vite": "^7.1.7"
   }
 }

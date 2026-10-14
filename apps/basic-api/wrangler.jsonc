@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "h3leaf-basic-api",
+  "main": "dist/api.mjs",
+  "compatibility_date": "2026-10-14",
+  // h3leaf already emits a self-contained ESM worker.
+  "no_bundle": true,
+  "workers_dev": true,
+  "observability": {
+    "enabled": true,
+    "traces": {
+      "enabled": true,
+    },
+  },
+}

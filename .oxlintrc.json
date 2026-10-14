@@ -1,5 +1,5 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": ["**/dist/**", "**/node_modules/**", "**/.h3leaf/**"],
+  "ignorePatterns": ["**/dist/**", "**/node_modules/**", "**/.h3leaf/**", "**/.vitepress/cache/**"],
   "categories": { "correctness": "error", "suspicious": "error" }
 }

@@ -1,5 +1,6 @@
 {
   "name": "@h3leaf/example-basic-api",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {

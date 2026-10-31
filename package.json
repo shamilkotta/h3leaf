@@ -1,5 +1,6 @@
 {
   "name": "h3leaf-monorepo",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "pnpm -r --if-present build",

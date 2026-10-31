@@ -1,5 +1,6 @@
 {
   "name": "@h3leaf/example-vite-api",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
